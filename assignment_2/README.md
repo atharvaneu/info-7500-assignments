@@ -6,7 +6,7 @@
 
 1. Clone repo and `cd merkle`
 
-2. Generate a Merkle proof by using `cargo run {total number of leaves} {leaf_position}`
+2. Generate a Merkle proof by using `cargo run prove {total number of leaves} {leaf_position}`
 
 ```
     cargo run prove 10 4
