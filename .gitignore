@@ -3,3 +3,4 @@ assignment_2_1/
 **/node_modules
 **/.next
 *.zip
+**/.env.local
