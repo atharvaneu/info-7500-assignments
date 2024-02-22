@@ -18,73 +18,39 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { GET_TRANSACTIONS_DATA, GET_BLOCKS_DATA} from "@/shared/queries"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+import { Skeleton } from "@/components/ui/skeleton"
+import { GET_TRANSACTIONS_DATA, GET_BLOCKS_DATA } from "@/shared/queries"
 import { TableColumnType } from "@/shared/types"
 
 const { log } = console
-
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-]
 
 export interface DataTableProps {
     className?: string;
 }
 
 export function TransactionsTable({ className }: DataTableProps) {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [page, setPage] = useState<number>(1);
     const [tableData, setTableData] = useState<TableColumnType[]>();
 
-    const fourHoursAgo = new Date(new Date().getTime() - (0.33 * 60 * 60 * 1000));
+    const twentyMinuteOffset = new Date(new Date().getTime() - (0.33 * 60 * 60 * 1000));
 
     // Get the ISO string representation
-    const offsetTime = fourHoursAgo.toISOString();
+    const offsetTime = twentyMinuteOffset.toISOString();
 
     const data = JSON.stringify({
         "query": GET_TRANSACTIONS_DATA,
-        "variables": JSON.stringify({ afterTime: offsetTime })
+        "variables": JSON.stringify({ afterTime: offsetTime, offset: page * 10 })
     })
-
 
     const config = {
         method: "POST",
@@ -99,7 +65,7 @@ export function TransactionsTable({ className }: DataTableProps) {
     }
 
     useEffect(() => {
-
+        setLoading(true);
         axios.request(config).then((response) => {
             const transactions = response?.data?.data?.ethereum?.transactions;
 
@@ -116,9 +82,26 @@ export function TransactionsTable({ className }: DataTableProps) {
             })
 
             setTableData(() => _tmp)
+            setLoading(false);
         })
-    }, [])
+    }, [page])
 
+
+    function handlePagination(option: string) {
+        if (option === 'next') {
+            setPage((prev) => prev + 1);
+        }
+        else if (option === 'prev' && page > 1) {
+            setPage((prev) => prev - 1);
+        }
+    }
+
+
+    if (loading) {
+        return <section className={`w-full rounded p-5 ${className}`}>
+                <Skeleton className="w-[100px] h-[20px] rounded-full" />
+            </section>
+    }
 
     return (
         <section className={`w-full rounded p-5 ${className}`}>
@@ -179,6 +162,18 @@ export function TransactionsTable({ className }: DataTableProps) {
                     ))}
                 </TableBody>
             </Table >
+
+            <Pagination className="mt-6">
+                <PaginationContent>
+                    <PaginationItem className="cursor-pointer" onClick={() => handlePagination('prev')}>
+                        <PaginationPrevious />
+                    </PaginationItem>
+                    <PaginationItem>Page {page}</PaginationItem>
+                    <PaginationItem className="cursor-pointer" onClick={() => handlePagination('next')}>
+                        <PaginationNext />
+                    </PaginationItem>
+                </PaginationContent>
+            </Pagination>
 
         </section>
     )

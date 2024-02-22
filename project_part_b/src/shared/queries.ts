@@ -1,7 +1,7 @@
 export const GET_TRANSACTIONS_DATA = `
-query GET_TRANSACTIONS_DATA ($afterTime: ISO8601DateTime) {
+query GET_TRANSACTIONS_DATA ($afterTime: ISO8601DateTime, $offset: Int) {
   ethereum {
-    transactions(time: {after: $afterTime}, options: {limit: 10}) {
+    transactions(time: {after: $afterTime}, options: {limit: 10, offset: $offset}) {
       gas
       sender {
         address
@@ -21,9 +21,9 @@ query GET_TRANSACTIONS_DATA ($afterTime: ISO8601DateTime) {
 `;
 
 export const GET_BLOCKS_DATA = `
-query GET_BLOCKS_DATA ($afterTime: ISO8601DateTime) {
+query GET_BLOCKS_DATA ($afterTime: ISO8601DateTime, $offset: Int) {
   ethereum {
-    blocks(date: {after: $afterTime}, options: {limit: 10}) {
+    blocks(date: {after: $afterTime}, options: {limit: 10, offset: $offset}) {
       hash
       height
       reward

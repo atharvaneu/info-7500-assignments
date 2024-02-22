@@ -8,4 +8,11 @@ export interface TableColumnType {
     gas: string;
 }
 
-
+export interface BlocksColumnType {
+    blockHash: string;
+    blockNumber: string;
+    reward: string;
+    txnCount: string;
+    blockSize: string;
+    gasUsed: string;
+}
