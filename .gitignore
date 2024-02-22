@@ -1,4 +1,5 @@
 assignment_1/
 assignment_2_1/
 **/node_modules
+**/.next
 *.zip
