@@ -104,7 +104,7 @@ export function TransactionsTable({ className }: DataTableProps) {
     }
 
     return (
-        <section className={`w-full rounded p-5 ${className}`}>
+        <section className={`w-full rounded p-5 font-semibold ${className}`}>
             <Table>
                 <TableCaption>All transactions above are live and real-time</TableCaption>
                 <TableHeader>
@@ -152,7 +152,7 @@ export function TransactionsTable({ className }: DataTableProps) {
                                     </HoverCardContent>
                                 </HoverCard>
                             </TableCell>
-                            <TableCell className="text-right">{t.amount}</TableCell>
+                            <TableCell className="text-right ">{t.amount} ETH</TableCell>
                             <TableCell className="text-center">
                                 <Badge className={`${t.success ? 'bg-green-700' : 'bg-red-700'}`}>{t.success ? 'Completed' : 'Pending'}</Badge>
                             </TableCell>

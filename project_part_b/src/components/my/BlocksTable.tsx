@@ -42,10 +42,10 @@ export function BlocksTable({ className }: BlocksTableProps) {
     const [page, setPage] = useState<number>(1);
     const [tableData, setTableData] = useState<BlocksColumnType[]>();
 
-    const twoHourOffset = new Date(new Date().getTime() - (10 * 60 * 60 * 1000));
+    const twelveHourOffset = new Date(new Date().getTime() - (12 * 60 * 60 * 1000));
 
     // Get the ISO string representation
-    const offsetTime = twoHourOffset.toISOString();
+    const offsetTime = twelveHourOffset.toISOString();
 
     const data = JSON.stringify({
         "query": GET_BLOCKS_DATA,
@@ -58,8 +58,8 @@ export function BlocksTable({ className }: BlocksTableProps) {
         url: 'https://graphql.bitquery.io',
         headers: {
             'Content-Type': 'application/json',
-            'X-API-KEY': 'BQYOLSSJn8JNtIIXjtX6jJ423q3Wpp7V',
-            'Authorization': 'Bearer ory_at_Zx_2iC0p60cgZsQ0p5-zWBcPeYxL0SdUSrED_kLI5Fs.FDNU_5vbsYx85ae_Qjqk9kYaHDJ7uaqxBs2VZcOf2x8'
+            'X-API-KEY': process.env.NEXT_PUBLIC_API_KEY,
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_BEARER_TOKEN}`
         },
         data
     }
@@ -96,20 +96,20 @@ export function BlocksTable({ className }: BlocksTableProps) {
 
     if (loading) {
         return <section className={`w-full rounded p-5 ${className}`}>
-                <Skeleton className="w-[100px] h-[20px] rounded-full" />
-            </section>
+            <Skeleton className="w-[100px] h-[20px] rounded-full" />
+        </section>
     }
 
     return (
-        <section className={`w-full rounded p-5 ${className}`}>
+        <section className={`w-full rounded p-5 font-semibold ${className}`}>
             <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[150px]">Block hash</TableHead>
                         <TableHead className="w-[200px]">Block number (height)</TableHead>
-                        <TableHead className="w-[100px]">Reward</TableHead>
+                        <TableHead className="w-[140px]">Reward</TableHead>
                         <TableHead className="w-[300px] text-right">Total transactions</TableHead>
-                        <TableHead className="text-center">Size</TableHead>
+                        <TableHead className="text-center">Size (level)</TableHead>
                         <TableHead className="">Gas used</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -135,7 +135,7 @@ export function BlocksTable({ className }: BlocksTableProps) {
                             </TableCell>
                             <TableCell className="text-right">{t.txnCount}</TableCell>
                             <TableCell className="text-center">
-                                <Badge className={``}>{t.blockSize}</Badge>
+                                <Badge>{t.blockSize}</Badge>
                             </TableCell>
                             <TableCell>{t.gasUsed}</TableCell>
                         </TableRow>
