@@ -63,12 +63,6 @@ export default function Home() {
             setLoading(false);
         })
     }, [])
-    if (loading) {
-        return <section className={`w-full rounded p-5 `}>
-            <Skeleton className="w-[100px] h-[20px] rounded-full" />
-        </section>
-    }
-
 
     return (
         <main className="flex min-h-screen flex-col justify-start p-24 bg-black">
