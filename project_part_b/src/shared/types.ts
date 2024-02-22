@@ -16,3 +16,10 @@ export interface BlocksColumnType {
     blockSize: string;
     gasUsed: string;
 }
+
+
+export interface CardDetailsType {
+    blocks: string;
+    gas: string;
+    txns: string;
+}
