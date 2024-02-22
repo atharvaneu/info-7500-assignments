@@ -21,15 +21,30 @@ query GET_TRANSACTIONS_DATA ($afterTime: ISO8601DateTime, $offset: Int) {
 `;
 
 export const GET_BLOCKS_DATA = `
-query GET_BLOCKS_DATA ($afterTime: ISO8601DateTime, $offset: Int) {
+query GET_BLOCKS_DATA ($offset: Int) {
   ethereum {
-    blocks(date: {after: $afterTime}, options: {limit: 10, offset: $offset}) {
+    blocks(options: {limit: 10, offset: $offset}) {
       hash
       height
       reward
       transactionCount
       size
       gasUsed
+    }
+  }
+}
+`;
+
+export const GET_COUNT = `
+query GET_COUNT ($afterTime: ISO8601DateTime) {
+  ethereum {
+    blocks {
+      count
+      gasUsed
+    }
+    transactions(time: {after: $afterTime}) {
+      amount
+      count
     }
   }
 }
