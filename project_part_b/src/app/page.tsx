@@ -8,7 +8,6 @@ import { GET_COUNT } from "@/shared/queries"
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -73,7 +72,9 @@ export default function Home() {
 
     return (
         <main className="flex min-h-screen flex-col justify-start p-24 bg-black">
-            <div className="flex gap-10">
+            <h1 className="text-white text-2xl font-extrabold">Ethereum live transactions and blocks data <span className="font-light">(<span className="underline underline-offset-4">hover</span> over hashes to copy them)</span></h1>
+
+            <div className="flex gap-10 mt-10">
                 <Card className="">
                     <CardHeader>
                         <CardTitle>Total blocks</CardTitle>
@@ -102,7 +103,7 @@ export default function Home() {
                         <CardTitle>Total transactions</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="font-semibold text-5xl">{parseInt(cardDetails?.txns) ?? 0}</p>
+                        <p className="font-semibold text-5xl">{parseInt(cardDetails?.txns as string) ?? 0}</p>
                     </CardContent>
                     <CardFooter>
                         This is the total transactions in the past <span className="underline underline-offset-4 ml-1">two hours</span>
