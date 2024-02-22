@@ -13,7 +13,6 @@ import {
     TableBody,
     TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -21,14 +20,12 @@ import {
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
-    PaginationLink,
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
 import { Skeleton } from "@/components/ui/skeleton"
-import { GET_TRANSACTIONS_DATA, GET_BLOCKS_DATA } from "@/shared/queries"
+import { GET_TRANSACTIONS_DATA } from "@/shared/queries"
 import { TableColumnType } from "@/shared/types"
 
 const { log } = console
@@ -66,7 +63,7 @@ export function TransactionsTable({ className }: DataTableProps) {
 
     useEffect(() => {
         setLoading(true);
-        axios.request(config).then((response) => {
+        axios.request(config).then((response: any) => {
             const transactions = response?.data?.data?.ethereum?.transactions;
 
             const _tmp = transactions.map((t: any) => {
@@ -89,10 +86,10 @@ export function TransactionsTable({ className }: DataTableProps) {
 
     function handlePagination(option: string) {
         if (option === 'next') {
-            setPage((prev) => prev + 1);
+            setPage((prev: number) => prev + 1);
         }
         else if (option === 'prev' && page > 1) {
-            setPage((prev) => prev - 1);
+            setPage((prev: number) => prev - 1);
         }
     }
 
@@ -119,7 +116,7 @@ export function TransactionsTable({ className }: DataTableProps) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {tableData?.map((t) => (
+                    {tableData?.map((t: TableColumnType) => (
                         <TableRow key={t.txnHash}>
                             <TableCell className="font-medium">
                                 <HoverCard>
